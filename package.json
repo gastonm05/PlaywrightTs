@@ -1,0 +1,32 @@
+{
+  "name": "playwright-ts",
+  "version": "1.0.0",
+  "description": "Playwright-based UI & API test automation project with TypeScript using Page Object Model pattern",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --project=chromium --project=firefox --project=webkit",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui-only": "playwright test tests/ui",
+    "test:api-only": "playwright test tests/api",
+    "test:chrome": "playwright test --project=chromium",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "testing",
+    "page-object-model",
+    "api-testing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.2",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.7.2"
+  }
+}
