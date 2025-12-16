@@ -5,8 +5,9 @@ on:
   pull_request:
     branches: [ main, master ]
 jobs:
-  test:
-    timeout-minutes: 60
+  api-tests:
+    name: API Tests
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -16,12 +17,40 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright install chromium --with-deps
+    - name: Run API Tests
+      run: npx playwright test tests/api --project=chromium
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
-        name: playwright-report
+        name: api-report
         path: playwright-report/
         retention-days: 30
+
+  ui-tests:
+    name: UI Tests
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install chromium --with-deps
+    - name: Run UI Tests
+      run: npx playwright test tests/ui --project=chromium
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: ui-report
+        path: playwright-report/
+        retention-days: 30
+    - uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: ui-screenshots
+        path: test-results/
+        retention-days: 7
